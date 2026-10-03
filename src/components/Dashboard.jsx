@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   Armchair,
@@ -20,29 +21,30 @@ function Dashboard() {
 
   useEffect(() => {
     fetch("http://localhost:3000/seats")
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
         setSeats(data);
-        setSelectedSeat(data.find((seat) => seat.seatId === "A4"));
+
+        const defaultSeat = data.find((seat) => seat.seatId === "A4");
+        if (defaultSeat) {
+          setSelectedSeat(defaultSeat);
+        }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error("Error loading seats:", error));
 
     fetch("http://localhost:3000/bookings")
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => setBookings(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error("Error loading bookings:", error));
   }, []);
 
   const totalSeats = seats.length;
-
   const availableSeats = seats.filter(
     (seat) => seat.status === "available"
   ).length;
-
   const occupiedSeats = seats.filter(
     (seat) => seat.status === "occupied"
   ).length;
-
   const reservedSeats = seats.filter(
     (seat) => seat.status === "reserved"
   ).length;
@@ -66,7 +68,6 @@ function Dashboard() {
           <h1 className="text-2xl font-bold text-[#17233c]">
             Welcome, Student!
           </h1>
-
           <p className="text-sm text-gray-500 mt-1">
             Find and book available seats in your campus library or lab.
           </p>
@@ -87,7 +88,6 @@ function Dashboard() {
             <div className="w-9 h-9 rounded-full bg-indigo-500 text-white flex items-center justify-center text-sm font-semibold">
               S
             </div>
-
             <span className="text-xs font-medium text-gray-700">
               Student
             </span>
@@ -184,25 +184,28 @@ function Dashboard() {
           <div className="grid grid-cols-[28px_repeat(10,minmax(0,1fr))] gap-2">
             <div />
 
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((number) => (
-              <div
-                key={number}
-                className="text-center text-[10px] font-medium text-gray-500"
-              >
-                {number}
-              </div>
-            ))}
-
-            {["A", "B", "C", "D"].map((row) => (
-              <div key={row} className="contents">
-                <div className="flex items-center justify-center text-xs font-bold text-gray-500">
-                  {row}
+            {Array.from({ length: 10 }, (_, index) => index + 1).map(
+              (number) => (
+                <div
+                  key={number}
+                  className="text-center text-[10px] font-medium text-gray-500"
+                >
+                  {number}
                 </div>
+              )
+            )}
 
-                {seats
-                  .filter((seat) => seat.row === row)
-                  .map((seat) => {
-                    const visible =
+            {["A", "B", "C", "D"].map((row) => {
+              const rowSeats = seats.filter((seat) => seat.row === row);
+
+              return (
+                <div key={row} className="contents">
+                  <div className="flex items-center justify-center text-xs font-bold text-gray-500">
+                    {row}
+                  </div>
+
+                  {rowSeats.map((seat) => {
+                    const isVisible =
                       filter === "all" || seat.status === filter;
 
                     return (
@@ -210,7 +213,7 @@ function Dashboard() {
                         key={seat.id}
                         onClick={() => setSelectedSeat(seat)}
                         className={`h-9 rounded-md flex items-center justify-center text-xs font-semibold transition ${
-                          visible
+                          isVisible
                             ? getSeatStyle(seat.status)
                             : "bg-gray-100 text-gray-300 opacity-40"
                         } ${
@@ -223,8 +226,9 @@ function Dashboard() {
                       </button>
                     );
                   })}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -281,15 +285,16 @@ function FilterButton({ active, onClick, children }) {
 }
 
 function getSeatStyle(status) {
-  if (status === "available") {
-    return "bg-green-100 text-green-700 hover:bg-green-200";
+  switch (status) {
+    case "available":
+      return "bg-green-100 text-green-700 hover:bg-green-200";
+    case "occupied":
+      return "bg-red-100 text-red-600 hover:bg-red-200";
+    case "reserved":
+      return "bg-yellow-100 text-yellow-700 hover:bg-yellow-200";
+    default:
+      return "bg-gray-100 text-gray-500";
   }
-
-  if (status === "occupied") {
-    return "bg-red-100 text-red-600 hover:bg-red-200";
-  }
-
-  return "bg-yellow-100 text-yellow-700 hover:bg-yellow-200";
 }
 
 function SeatDetails({ seat, booking, onClose }) {
@@ -324,9 +329,7 @@ function SeatDetails({ seat, booking, onClose }) {
       </div>
 
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-[#17233c]">
-          {seat.seatId}
-        </h3>
+        <h3 className="text-2xl font-bold text-[#17233c]">{seat.seatId}</h3>
 
         <span
           className={`px-3 py-1 rounded-md text-[11px] font-semibold capitalize ${
@@ -409,7 +412,6 @@ function Detail({ icon, title, value }) {
 
       <div className="min-w-0">
         <p className="text-[10px] text-gray-400 mb-0.5">{title}</p>
-
         <p className="text-xs font-medium text-gray-700 break-words">
           {value}
         </p>
@@ -440,16 +442,4 @@ function formatDate(date) {
 }
 
 export default Dashboard;
-
-
-
-
-
-
-
-
-
-
-
-
 
