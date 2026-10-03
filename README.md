@@ -1,20 +1,96 @@
-# React + Vite
+Campus Seat Finder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based campus seat management interface designed to help students find and view available seating spaces on campus.
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Campus seat discovery
+- Seat availability interface
+- Clean and responsive UI
+- Sidebar-based navigation
+- Component-based React architecture
+- Local JSON data support
+- Responsive styling with Tailwind CSS
+- Icon-based interface using Lucide React
 
-## React Compiler
+Tech Stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- React 19
+- Vite
+- Tailwind CSS
+- Lucide React
+- JSON Server
+- JavaScript
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+Project Structure
 
-## Expanding the ESLint configuration
+campus-seat/
+├── public/
+├── src/
+├── DB.json
+├── index.html
+├── package.json
+├── vite.config.js
+└── eslint.config.js
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-#
+Getting Started
+
+1. Clone the repository
+
+git clone https://github.com/rajveersinh-jadeja/campus-seat.git
+cd campus-seat
+
+2. Install dependencies
+
+npm install
+
+3. Start the development server
+
+npm run dev
+
+The Vite development server will start the application locally.
+
+4. Start the JSON Server
+
+In a separate terminal:
+
+npm run server
+
+The local JSON API runs on port "3001".
+
+Available Scripts
+
+Command| Description
+"npm run dev"| Starts the Vite development server
+"npm run server"| Starts JSON Server on port 3001
+"npm run build"| Creates a production build
+"npm run preview"| Previews the production build
+"npm run lint"| Runs ESLint
+
+Development
+
+The frontend is built with React and Vite. Tailwind CSS is used for styling, while Lucide React provides interface icons.
+
+The project uses "DB.json" as a local data source during development through JSON Server.
+
+Future Improvements
+
+- User authentication
+- Real-time seat availability
+- Seat reservation system
+- Search and filtering
+- Campus/building selection
+- Admin dashboard
+- Backend API integration
+- Database integration
+- Mobile optimization
+
+Author
+
+Rajveersinh Jadeja
+
+GitHub: "@rajveersinh-jadeja" (https://github.com/rajveersinh-jadeja)
+
+License
+
+This project is intended for learning and development purposes.
